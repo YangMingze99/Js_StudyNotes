@@ -181,4 +181,96 @@ Tips：根据选择器获取元素在IE8以下有兼容性问题。
   - 语法：**节点.nextElementSibling 
 - 获取上一个兄弟
   - 语法：**节点.previousElementSibling
+  
+  
+ 动态创建元素
+ 
+- 通过innerHTML创建元素
+- 语法：元素.innerHTML = '内容';
+- 代码
+<button>创建li</button>
+  <ul>
+    <li>我是li</li>
+  </ul>
+  <script>
+    var btn = document.querySelector('button');
+    var ul = document.querySelector('ul');
+    btn.onclick = function() {
+      // 获取ul中原有的内容
+      var str = ul.innerHTML;
+      // 设置ul的内容
+      ul.innerHTML =str + '<li>我是新来的</li>';
+    };
+  </script>
+  
+  通过document.createElement创建元素
+
+- 语法：document.createElement(‘标签名’);   返回一个新的元素对象
+
+- 代码：
+<button>创建li</button>
+  <ul>
+    <li>我是li</li>
+  </ul>
+  <script>
+    var btn = document.querySelector('button');
+    var ul = document.querySelector('ul');
+    btn.onclick = function() {
+      // 创建一个新的li元素
+      var newLi = document.createElement('li');
+      // 追加到ul中
+      ul.appendChild(newLi);
+      // 设置元素的内容
+      newLi.innerText = '我是新来的';
+    };
+  </script>
+  
+  提示： - innerHTML在追加多个元素时执行速度慢，性能差。
+        - createElement方法执行速度快*性能高。
+        
+ 动态追加元素
+
+- 语法：父元素.appendChild(子元素);
+
+- 代码：
+<button>创建li</button>
+<ul>
+ <li>我是li</li>
+</ul>
+<script>
+ var btn = document.querySelector('button');
+ var ul = document.querySelector('ul');
+ btn.onclick = function() {
+   // 创建一个新的li元素
+   var newLi = document.createElement('li');
+   // 追加到ul中
+   ul.appendChild(newLi);
+   // 设置元素的内容
+   newLi.innerText = '我是新来的';
+ };
+</script>
+
+动态删除元素
+
+- 语法：父元素.removeChild(子元素);
+
+1、创建元素：var n = document.createElement('标签名');
+
+2、追加元素：父元素.appendChild(子元素)
+
+3、删除元素：父元素.removeChild(子元素)
+
+插入元素
+
+- 语法：父节点.insertBefore(新的节点,旧的子节点)
+
+替换元素
+
+- 语法：父节点.replaceChild(新的节点,旧的子节点)
+- 代码：
+
+克隆元素
+
+- 语法：元素.cloneNode(true或false);  返回一份新的克隆后的元素
+
 
