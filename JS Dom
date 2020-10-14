@@ -1,0 +1,184 @@
+### DOM的概念
+
+概念：文档对象模型。
+- 文档：html文件
+- 对象：属性和方法
+- 模型：（树）
+
+获取元素=======>
+根据id值获取单个元素 语法：document.getElementById('id值'); 
+
+  <button id="btn">按钮1</button>
+  <button id="btn">按钮2</button>
+  <script>
+    // 根据id获取单个元素，返回一个元素
+    var btn = document.getElementById('btn');
+    // dir可以打印出对象中的属性和方法
+    console.dir(btn);
+    console.log(btn);
+    // 细节：若页面上有相同的id值的标签时，在获取时，获取的是id值第一次出现的标签。
+  </script>
+
+根据标签名获取一组元素 语法：document.getElementsByTagName('标签名'); 
+  <button>按钮1</button>
+  <button>按钮2</button>
+  <button>按钮3</button>
+  <button>按钮4</button>
+  <script>
+    // 需求：获取所有按钮
+    // 根据标签名获取一组元素，返回的是一个伪数组
+    var btns = document.getElementsByTagName('button');
+    console.log(btns);
+
+    // 数组和伪数组的区别？
+    // 相同：都有索引和长度（length）
+    // 不同点：伪数组不能够调用真正数组中内置的方法（push、pop、sort...）
+  </script>
+
+根据选择器获取单个元素 语法：document.querySelector('选择器');
+根据选择器获取一组元素 语法：document.querySelectorAll('选择器');
+
+  <button class="btn">按钮1</button>
+  <button class="btn">按钮2</button>
+  <button class="btn">按钮3</button>
+  <script>
+    // 根据选择器获取当个元素，若有多个同样选择器的标签，获取的将会是第一次出现的标签
+    var btn = document.querySelector('.btn');
+    console.log(btn);
+
+    // 根据选择器获取一组元素
+    var btns = document.querySelectorAll('.btn');
+    console.log(btns);
+  </script>
+Tips：根据选择器获取元素在IE8以下有兼容性问题。
+
+=====================================================================================
+事件三要素
+
+- 事件源：被触发的元素，比如点击的按钮
+- 事件类型：如何触发的事件，比如点击按钮 onclick
+- 事件处理程序：事件发生后的结果。
+例如：
+ // 获取按钮元素
+ var btn = document.getElementById('btn');
+ btn.onclick = function(){
+   // 函数体中的代码，就是事件发生后要执行的程序
+   alert('燃烧我的卡路里');
+ };
+ // 事件处理程序的本质是什么？
+ // ① onclick本质上就是事件源这个对象中的某一个键值对而已。默认值是null，表示没有注册事件
+ // ② 给事件源注册onclick事件，其实本质上就是给onclick赋值函数，所以onclick是事件源的一个方法而已
+ // ③ 点击按钮时，浏览器自动调用了btn.onclick();
+ 
+ 
+ 事件处理程序中的this=======>事件处理程序中的this指向事件源
+ // 获取按钮元素
+ var btn3 = document.getElementById('btn');
+ btn3.onclick = function(){
+   // 函数体中的代码，就是事件发生后要执行的程序
+   // 关键字：this，代表事件源
+   console.log(this);
+ }
+ 
+ 
+ 取消a标签默认行为
+ 方式1：事件处理程序中最后设置return false; 
+  <a id="link" href="https://www.baidu.com">点击</a>
+  <script>
+    var link = document.getElementById('link');
+    link.onclick = function(){
+      
+      	alert('你好');
+      	// 方式1：取消a点击后的默认跳转行为 return false;
+      	return false;
+    };
+  </script>
+  
+  方式2：设置a标签的href属性值为：javascript:
+  <!-- 方式二：给a标签的href值设置javascript: ,表示将来点击a时，会阻止默认跳转行为，并且仅仅会执行js代码-->
+  <a href="javascript:">点击2</a>
+  <!-- 扩展：通过a可以打开打电话应用 -->
+  <a href="tel:">打电话</a>
+  <!-- 扩展：通过a可以打开电子邮件应用 -->
+  <a href="mailto:">打开邮件</a>
+  
+  ===================================================================================
+  常见的属性
+  id、title、href、src、className、innerText / textContent、innerHTML
+  
+  1.className操作类名
+    <div id="box" class="a"></div>
+    <script>
+      var div = document.getElementById('box');
+      // 获取类名
+      console.log(div.class); // undefined
+      console.log(div.className);  // a
+      // 设置类名
+      div.className = 'b';
+    </script>
+    
+   2.innerText和innerHTML的区别
+    <div id="box"><h2>我是div中的标题</h2></div>
+    <script>
+      // 1. 获取div元素
+      var div = document.getElementById('box');
+      console.dir(div);
+      // 【获取】
+      // ① 通过innerText获取,仅仅包含文本
+      console.log(div.innerText);
+      // ② 通过innerHTML获取，若有子标签时，会包含文本和子标签
+      console.log(div.innerHTML);
+
+      // 【设置】
+      // ① 通过innerText设置,若设置中包含了子标签，该标签不会被渲染而是当做普通文本显示
+      // div.innerText = '<a href="#">我是div中的超链接</a>';
+      // ② 通过innerHTML设置,若设置中包含了子标签，该标签会被渲染显示
+      div.innerHTML= '<a href="#">我是div中的超链接</a>';
+    </script>
+    
+    3.innerText和textContent的兼容性问题
+    <div id="box"><h2>我是div中的标题</h2></div>
+    <script>
+      // 1. 获取div元素
+      var div = document.getElementById('box');
+      console.log('innerText:' + div.innerText);
+      console.log('textContent:' + div.textContent);
+      // 相同点：获取的都是文本
+      // 不同点：
+      // ① textContent属性在ie低版本中不支持，innerText基本没有兼容问题
+      // ② textContent标准属性（官宣），innerText（野路子，但是兼容性好,推荐使用）
+   </script>
+
+===================================================================================================
+节点的层级
+
+根据节点的关系来获取元素
+
+节点的关系
+- 父子关系
+- 兄弟关系
+
+根据子节点获取父节点
+
+ - 语法：子节点.parentNode
+
+根据父节点获取子节点
+
+- 语法：父节点.childNodes; 获取的子节点包含【文本】和【元素】
+- 语法：父元素.children;  获取的子节点仅仅包含【元素】
+- 语法：父节点.firstElementChild; 获取【第一个】子元素节点
+- 语法：父节点.lastElementChild; 获取【最后一个】元素节点
+
+节点的nodeType、nodeName、nodeValue的属性
+
+- 节点的nodeType（节点类型）属性的作用：元素→ 1；  文本→3
+- 节点的nodeName（节点名称）属性的作用：元素→ 大写的标签名  文本→ `#text` 
+- 节点的nodeValue（节点值）属性的作用：元素→ null       文本→ 文本的内容
+
+获取兄弟节点
+
+- 获取下一个兄弟
+  - 语法：**节点.nextElementSibling 
+- 获取上一个兄弟
+  - 语法：**节点.previousElementSibling
+
