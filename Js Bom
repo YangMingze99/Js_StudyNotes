@@ -1,0 +1,335 @@
+## BOM
+
+###  BOM介绍
+
+BOM的概念：浏览器对象模型。
+
+### 顶级对象-window
+
+- **window对象介绍** 
+
+  1. window对象被 称为顶级对象 或全局对象 。
+  2. 因为全局变量和全局函数本质上都是window对象的属性或方法。
+  3. window对象可以省略。
+
+- **window中的对话框** 
+  - alert
+  - prompt
+  - confirm
+
+- **定时器1：** **window.setTimeout(callback, time);**   
+
+  - 作用：延迟执行一段程序，仅仅执行一次 （定时炸弹），返回一个数字，表示是哪个定时器。
+
+  - 参数：
+
+    - callback, 函数定义，函数体中存放定义器要执行的代码。
+    - time, 等待的时间，数字，表示的是毫秒
+
+  - 清除定时器：**window.clearTimeout(定时器的标识);** 
+
+  - 代码： 
+  // 开启一个定时器
+    var num1 = setTimeout(function(){
+      // 定时器延迟时间到达后，要执行的代码
+      console.log('爆炸了,Duang~~~1') ;
+    },5000);
+
+    // 开启一个定时器
+    var num2 = setTimeout(function(){
+      // 定时器延迟时间到达后，要执行的代码
+      console.log('爆炸了,Duang~~~2') ;
+    },5000);
+    console.log(num1,num2);
+    
+    // 获取按钮
+  var btn = document.querySelector('button');
+  btn.onclick = function() {
+    // 清除定时器
+    clearTimeout(num1);
+    clearTimeout(num2);
+  };
+  
+**定时器2：window.setInterval(callback, time); ** 
+
+- 作用：延迟执行一段程序，重复执行 （闹钟）。返回一个数字，表示是哪个定时器。
+
+- 参数：
+
+  - callback, 函数定义，函数体中存放定义器要执行的代码。
+  - time, 等待的时间，数字，表示的是毫秒
+
+- 清除定时器：**window.clearInterval(定时器的标识);** 
+
+- 代码：  
+// 开启一个定时器
+  var num = setInterval(function(){
+    var date = new Date();
+    console.log(date);
+  },1000);
+  
+  // 获取按钮
+  var btn = document.querySelector('button');
+  btn.onclick = function () {
+    clearInterval(num);
+  };
+  
+  
+  ### location对象
+
+- **location**对象，将来操作浏览器的地址栏。
+- 属性：
+  - location.href  设置或获取地址栏地址
+- 方法：
+  - location.reload(); 刷新页面
+  - 【location.assign()，location.replace()】
+  
+  
+  ### history对象
+
+- **history对象** ，用来操作历史记录
+- 属性：
+  - history.length;  获取历史记录的长度
+- 方法：
+  - history.back();    回退上一个历史记录
+  - history.forward();  前进下一个历史记录
+  - history.go(数字);  正数，表示前进； 负数，表示回退
+  
+  ### navigator对象
+
+- navigator对象， 用来获取浏览器的信息。
+- 属性：
+  - navigator.userAgent; 用来获取浏览器的信息
+  
+  ### onload事件
+
+- onload事件是页面加载事件，一般绑定给window
+- 页面把link，src，img图片都加载完
+
+  =====================================================================
+  
+  offset   client  scroll 三大家族
+  
+  ## 元素的offset系列属性
+
+### 获取元素的大小
+
+- **元素.offsetWidth   /  元素.offsetHeight;**  
+
+  返回的是数字。 大小包含： 内容 + padding + border;
+
+  注意：该属性仅仅只能够读取 ，不能够设置
+
+- 代码：
+  <style>
+ div {
+   width: 300px;
+   height: 300px;
+   position: absolute;
+   left:100px;
+   top:100px;
+   background: pink;
+   border: 10px solid blue;
+   padding: 10px;
+ }
+</style>
+ <div></div>
+<script>
+ var div = document.querySelector('div');
+ // 获取元素的大小
+ console.log(div.offsetWidth);
+ console.log(div.offsetHeight);
+
+ // 坑！设置(不能设置，是只读的)
+ div.offsetWidth = 1000 + 'px';
+ div.offsetHeight = 1000 + 'px';
+
+</script>
+
+### 获取元素的位置
+
+- **元素.offsetLeft  /  元素.offsetTop;**   
+
+  返回的是数字。（参照谁？看定位关系）
+
+- 代码：
+
+<div class="g">
+ <div class="f">
+   <div class="s"></div>
+ </div>
+</div>
+<script>
+ var s = document.querySelector('.s');
+ // 获取横向位置
+ console.log(s.offsetLeft);
+ // 获取纵向位置
+ console.log(s.offsetTop);
+
+ // parentNode
+ console.log(s.parentNode);
+ // offsetParent
+ console.log(s.offsetParent);
+
+</script>
+
+### 获取元素的父元素
+
+- **元素.offsetParent**  和 元素.parentNode的区别
+- 元素.offsetParent ，获取“父元素”，  按照定位关系。
+  - 元素.parentNode，  获取“父元素”，  按照标签关系。
+  
+  ## 元素的client系列属性
+
+### 获取元素的大小
+
+- **元素.clientWidth   /    元素.clientHeight ** 
+
+  获取元素的大小，包含 【内容 + padding】
+
+  ### 获取边框的厚度
+
+- 元素.clientLeft      /      元素.clientTop  
+
+## 元素的scroll系列属性
+
+### 获取元素的大小
+
+- 元素.scrollWidth   /    元素.scrollHeight 
+
+  获取的元素的大小  ,包含 【内容+ padding + 溢出】
+
+- 代码：
+
+  ```javascript
+   var div = document.querySelector('div');
+   console.log('scroll系列：' +div.scrollWidth);
+  ```
+
+### 获取被卷起的页面间距
+
+- 元素.scrollLeft      /     **元素.scrollTop**      
+
+  获取的是在该元素中卷去的页面的间距。【该属性不仅可以获取，还可以设置】
+
+## touch事件类型
+
+移动设备上无法使用鼠标，当手指触碰屏幕时会触发 click、mousedown、mouseup 事件。
+
+但是，touch事件要比鼠标事件执行效率高，用户体验好。
+
+**注意：以下事件必须通过事件监听注册** 
+
+事件添加：
+
+​	元素.onclick = function () {}
+
+​	元素.addEventlistener('click',function (){});
+
+- touchstart，手指按下事件
+- touchmove，手指移动事件
+- touchend，手指松开事件
+
+## touch事件对象
+
+- 常见的属性
+
+  1. 事件对象.touches ：位于屏幕上的所有手指的列表；
+  2. 事件对象.targetTouches ：位于该元素上的所有手指的列表；
+  3. 事件对象.changedTouches：被改变的手指列表。  touchstart时包含刚与触摸屏接触的触点，touchend时包含离开触摸屏的触点
+
+- 手指的位置
+
+  1. 手指对象.clientX/Y 手指相对于可视区域
+  2. 手指对象.pageX/Y 手指相对于文档
+
+  **注意：手指对象.clientX / Y 使用较多** 
+  
+  ## transitionend事件
+
+谁有过渡效果，这个事件添加给谁【事件监听】
+
+css中过渡结束后检测的行为
+
+## 本地存储技术
+
+- sessionStorage（临时存储） ：为每一个数据源维持一个存储区域，在浏览器打开期间存在，包括页面重新加载e。
+
+- localStorage（长期存储） ：与 sessionStorage 一样，但是浏览器关闭后，数据依然会一直存在。
+- cookie（可以在客户端设置也可以在服务器端设置。cookie会跟随任意HTTP请求一起发送）：兼容性好，但是增加了网络流量；它的数据容量也有限，最多只能存储`4KB`的数据，浏览器之间各有不同；不安全。
+
+相同点：都保存在浏览器端
+
+不同点：
+
+**①传递方式不同**
+
+cookie数据始终在同源的http请求中携带（即使不需要），即cookie在浏览器和服务器间来回传递。
+
+sessionStorage和localStorage不会自动把数据发给服务器，仅在本地保存。
+
+**②数据大小不同**
+
+cookie数据还有路径（path）的概念，可以限制cookie只属于某个路径下。
+存储大小限制也不同，cookie数据不能超过4k，同时因为每次http请求都会携带cookie，所以cookie只适合保存很小的数据，如会话标识。
+
+sessionStorage和localStorage 虽然也有存储大小的限制，但比cookie大得多，可以达到5M或更大。
+
+**③数据有效期不同**
+
+sessionStorage：仅在当前浏览器窗口关闭前有效，自然也就不可能持久保持；
+
+localStorage：始终有效，窗口或浏览器关闭也一直保存，因此用作持久数据；
+
+cookie只在设置的cookie过期时间之前一直有效，即使窗口或浏览器关闭。
+
+**④作用域不同**
+
+sessionStorage不在不同的浏览器窗口中共享，即使是同一个页面；
+
+localStorage 在所有同源窗口中都是共享的；
+
+cookie也是在所有同源窗口中都是共享的。
+
+Web Storage 支持事件通知机制，可以将数据更新的通知发送给监听者。
+Web Storage 的 api 接口使用更方便。
+
+
+
+- sessionStorage 和 localStorage 的用法基本一致，引用类型的值要转换成JSON
+
+
+localSortage对象：把数据以字符串的方式保存本地
+
+​	获取： localStorage.getItem('key')
+​	设置： localStorage.setItem('key',value)
+
+​	删除：localStorage.removeItem('key')
+
+​	清空：localStorage.clear()
+
+​	监听：Storage 发生变化（增加、更新、删除）时的 触发，同一个页面发生的改变不会触发，只会监听同一域名下其他页面改变 Storage
+window.addEventListener('storage', function (e) {
+        console.log('key', e.key);
+        console.log('oldValue', e.oldValue);
+        console.log('newValue', e.newValue);
+        console.log('url', e.url);
+})
+
+## JSON 方法补充
+
+​	作用：把字符串数组转成数组，或者把数组转成字符串数组
+
+例如：var str = '["a","b","c"]';
+
+​	JSON 解析：JSON.parse()：返回转换后的数组
+
+​	JSON 转字符串：JSON.stringify()
+
+
+
+
+  
+    
+    
+    
